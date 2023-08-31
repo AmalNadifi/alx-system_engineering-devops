@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# The following Script displays "Best School" 10 times using while loop, but for the 9th iteration displays "Hi"
+itr=1
+while [ "$itr" -le 10 ]
+do
+	echo "Best School"
+	if [ "${itr}" -eq 9 ]
+	then
+		echo "Hi"
+	fi
+	((itr++))
+done
