@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# The following Script displays "Best School" 10 times using while loop
+itr=0
+while [ "$itr" -lt 10 ]; do echo "Best School"; ((itr++)); done
