@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# The following Script displays "Best School" 10 times using until loop
+itr=0
+until [ "${itr}" -ge 10 ]; do echo "Best School"; ((itr++)); done
