@@ -8,19 +8,19 @@
 #Deletes the file /var/run/myscript.pid and terminates itself when receiving a SIGQUIT or SIGTERM signal
 
 # get the current PIDand write it to the PID file
-echo $$ > /var/run/myscript.pid
-
-# display "To infinity and beyond" indefinitely
-while true; do
-	echo "To infinity and beyond"
-	sleep 2
-done
+echo "$$" > /var/run/myscript.pid
 
 # trap SIGTERM signal to display the given message and clean up
-trap "echo 'I hate the kill command' && cleanup" SIGTERM
+trap "echo 'I hate the kill command'; rm -f /var/run/myscript.pid; exit" SIGTERM
 
 # trap SIGINT signal to display a message
 trap "echo 'Y U no love me?!'" SIGINT
 
 # Deletes the pid file and terminates itself when receiving a SIGQUIT or SIGTERM signal
 trap "rm -f /var/run/myscript.pid; exit" SIGQUIT
+
+# display "To infinity and beyond" indefinitely
+while true; do
+        echo "To infinity and beyond"
+        sleep 2
+done
