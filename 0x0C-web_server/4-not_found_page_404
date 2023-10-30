@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# The following script configures Nginx server to have a custom 404 page 
+# that contains the string "Ceci n'est pas une page"
+
+# Updating the package list
+sudo apt-get update -y
+
+# Installing Nginx
+sudo apt-get install nginx -y
+
+# Creating a default webpage with "Hello World!"
+echo "Hello World!" | sudo dd status=none of=/var/www/html/index.html
+
+# Creating a custom 404 page with the specified content
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html > /dev/null
+
+# Defining the configuration rules for the /redirect_me redirection
+NEW_RULE="\\\n\tlocation /redirect_me {\n\t\t return 301 https://www.merbou7a.ma;\n\t}\n"
+
+# Creating a backup of the default Nginx configuration
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
+
+# Inserting the new rules for /redirect_me into the Nginx configuration file
+sudo sed -i "53i $NEW_RULE" /etc/nginx/sites-available/default
+
+# Defining the configuration rules for the custom 404 page
+NEW_RULE="\\\n\terror_page 404 /404.html;\n\n\tlocation = /404.html {\n\t\tinternal;\n\t}\n"
+
+# Inserting the new rules for the custom 404 page into the Nginx configuration file
+sudo sed -i "53i $NEW_RULE" /etc/nginx/sites-available/default
+
+# Reloading Nginx to apply the new configuration
+sudo service nginx reload
