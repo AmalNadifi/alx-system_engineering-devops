@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# The following script configures Nginx server so that
+# /redirect_me is redirecting to another page
+
+# Installing Nginx if it's not already installed
+sudo apt-get update -y
+sudo apt-get install nginx -y
+
+# Creating a default HTML page with "Hello World!"
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Defining the configuration string for the redirection
+string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/www.blog.ehoneahobed.com permanent;"
+
+# Using sed to replace the default Nginx configuration with the redirection configuration
+sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+
+# Restarting the Nginx service to apply the new configuration
+sudo service nginx restart
