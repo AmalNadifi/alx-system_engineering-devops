@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# The following script fixes the Apache server configuration by setting the ServerName to localhost
+
+# Append "ServerName localhost" to the /etc/apache2/apache2.conf file to fix the configuration.
+echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Start the Apache service.
+service apache2 start
