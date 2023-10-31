@@ -15,13 +15,11 @@ file_line { 'install':
 
 # Creating a default HTML page with "Hello World!"
 file { '/var/www/html/index.html':
-  ensure  => file,
   content => "Hello World!\n",
 }
 
 # Defining the Nginx service
 service { 'nginx':
   ensure  => running,
-  enable  => true,
   require => [Package['nginx'],
 }
