@@ -17,5 +17,5 @@ echo "Hello World!" | sudo tee /var/www/html/index.html
 # Testing for syntax error
 sudo nginx -t
 
-# Making sure Nginx is running
+# Making sure Nginx's running
 sudo service nginx restart
