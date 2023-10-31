@@ -4,15 +4,18 @@
 # When querying Nginx at its root / with a GET request (requesting a page)
 # using curl, it must return a page that contains the string Hello World!
 
-# Updating the package list and install Nginx
+# Updating the package list and installing Nginx
 sudo apt-get update
-sudo apt-get upgrade
 sudo apt-get -y install nginx
 
-# Creating a default HTML page with "Hello World!"
-echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
-
+# Configuring theFireWall (UFW)
 sudo ufw allow 'Nginx HTTP'
+
+# Creating a default HTML page with "Hello World!"
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Testing for syntax error
+sudo nginx -t
 
 # Making sure Nginx is running
 sudo service nginx restart
