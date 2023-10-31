@@ -2,7 +2,7 @@
 
 # Installing the Nginx package
 package { 'nginx':
-  ensure =>installed,
+  ensure => installed,
 }
 
 # Add a 301 redirect rule to the Nginx configuration
@@ -21,5 +21,5 @@ file { '/var/www/html/index.html':
 # Defining the Nginx service
 service { 'nginx':
   ensure  => running,
-  require => [Package['nginx'],
+  require => Package['nginx'],
 }
