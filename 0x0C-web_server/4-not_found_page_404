@@ -3,31 +3,28 @@
 # that contains the string "Ceci n'est pas une page"
 
 # Updating the package list
-sudo apt-get update -y
+sudo apt-get update
 
 # Installing Nginx
-sudo apt-get install nginx -y
+sudo apt-get -y install nginx
 
 # Creating a default webpage with "Hello World!"
-echo "Hello World!" | sudo dd status=none of=/var/www/html/index.html
-
-# Creating a custom 404 page with the specified content
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html > /dev/null
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
 # Defining the configuration rules for the /redirect_me redirection
-NEW_RULE="\\\n\tlocation /redirect_me {\n\t\t return 301 https://www.merbou7a.ma;\n\t}\n"
-
-# Creating a backup of the default Nginx configuration
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
+redirect_config="server_name _;\n\trewrite ^/redirect_me https://www.merbou7a.ma permanent;"
 
 # Inserting the new rules for /redirect_me into the Nginx configuration file
-sudo sed -i "53i $NEW_RULE" /etc/nginx/sites-available/default
+sudo sed -i "s/server_name _;/$redirect_config/" /etc/nginx/sites-enabled/default
+
+# Creating a custom 404 page with the specified content
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 
 # Defining the configuration rules for the custom 404 page
-NEW_RULE="\\\n\terror_page 404 /404.html;\n\n\tlocation = /404.html {\n\t\tinternal;\n\t}\n"
+NEW_RULE="listen 80 default_server;\n\terror_page 404 /404.html;\n\tlocation = /404.html {\n\t\troot /var/www/html;\n\t\tinternal;\n\t}"
 
 # Inserting the new rules for the custom 404 page into the Nginx configuration file
-sudo sed -i "53i $NEW_RULE" /etc/nginx/sites-available/default
+sudo sed -i "s/listen 80 default_server;/$NEW_RULE/" /etc/nginx/sites-enabled/default
 
-# Reloading Nginx to apply the new configuration
-sudo service nginx reload
+# Restarting Nginx to apply the new configuration
+sudo service nginx restart
