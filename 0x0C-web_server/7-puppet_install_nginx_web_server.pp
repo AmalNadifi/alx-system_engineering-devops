@@ -19,24 +19,9 @@ file { '/var/www/html/index.html':
   content => "Hello World!\n",
 }
 
-# Setting up the Nginx server block
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => template('nginx/default.erb'),
-  require => Package['nginx'],
-}
-
-# Enabling the Nginx site configuration
-file { '/etc/nginx/sites-enabled/default':
-  ensure  => link,
-  target  => '/etc/nginx/sites-available/default',
-  require => File['/etc/nginx/sites-available/default'],
-  notify  => Service['nginx'],
-}
-
 # Defining the Nginx service
 service { 'nginx':
   ensure  => running,
   enable  => true,
-  require => [Package['nginx'], File['/etc/nginx/sites-enabled/default']],
+  require => [Package['nginx'],
 }
