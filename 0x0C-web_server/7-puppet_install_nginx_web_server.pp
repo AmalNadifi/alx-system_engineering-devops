@@ -2,7 +2,15 @@
 
 # Installing the Nginx package
 package { 'nginx':
-  ensure => present,
+  ensure =>installed,
+}
+
+# Add a 301 redirect rule to the Nginx configuration
+file_line { 'install':
+  ensure => 'present',
+  path   => '/etc/nginx/sites-enabled/default',
+  after  => 'listen 80 default_server;',
+  line   => 'rewrite ^/redirect_me https://www.github.com/AmalNadifi permanent;',
 }
 
 # Creating a default HTML page with "Hello World!"
@@ -31,30 +39,4 @@ service { 'nginx':
   ensure  => running,
   enable  => true,
   require => [Package['nginx'], File['/etc/nginx/sites-enabled/default']],
-}
-
-# Setting up the 301 redirect configuration
-file { '/etc/nginx/sites-available/redirect':
-  ensure  => file,
-  content => 'server {
-    listen 80;
-    server_name _;
-
-    location /redirect_me {
-        return 301 https://www.blog.ehoneahobed.com;
-    }
-
-    location / {
-        root /var/www/html;
-    }
-}',
-  require => Package['nginx'],
-}
-
-# Enabling the redirect site configuration
-file { '/etc/nginx/sites-enabled/redirect':
-  ensure  => link,
-  target  => '/etc/nginx/sites-available/redirect',
-  require => File['/etc/nginx/sites-available/redirect'],
-  notify  => Service['nginx'],
 }
