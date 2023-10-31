@@ -12,7 +12,7 @@ sudo apt-get -y install nginx
 sudo ufw allow 'Nginx HTTP'
 
 # Creating a default HTML page with "Hello World!"
-echo "Hello World!" | sudo tee /var/www/html/index.html
+echo 'Hello World!' | sudo tee /var/www/html/index.nginx-debian.html
 
 # Making sure Nginx's running
-sudo service nginx restart
+service nginx restart
