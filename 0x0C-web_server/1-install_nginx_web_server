@@ -7,7 +7,7 @@
 # Updating the package list and install Nginx
 sudo apt-get update
 sudo apt-get upgrade -y
-apt-get install -y nginx
+sudo apt-get install -y nginx
 
 # Creating a default HTML page with "Hello World!"
 echo "Hello World!" > /var/www/html/index.html
