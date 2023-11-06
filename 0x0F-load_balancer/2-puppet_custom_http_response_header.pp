@@ -1,23 +1,25 @@
 # Automating the task of updating the package list using Puppet
 
-# Executing the 'apt-get update' command to refresh the package list
-exec {'update':
-  command => '/usr/bin/apt-get update',
+# Updating the package list
+exec { 'update':
+  command   => 'sudo apt-get -y update',
+  provider  => shell,
 }
 
-# Ensuring the 'nginx' package is present using Puppet
-package {'nginx':
-  ensure => 'present',
+# Installing Nginx
+exec { 'install':
+  command   => 'sudo apt-get -y install nginx',
+  provider  => shell,
 }
 
-# Adding a custom HTTP header 'X-Served-By' with the server's hostname to the 'nginx.conf' file
-file_line { 'http_header':
-  path  => '/etc/nginx/nginx.conf',
-  match => 'http {',   # Searching for the 'http {' section in the configuration
-  line  => "http {\n\tadd_header X-Served-By \"${hostname}\";",  # Inserting the custom header with the server's hostname
+# Adding a custom HTTP header 'X-Served-By' with the server's hostname to the Nginx configuration
+exec { 'replace':
+  command   => 'sudo sed -i "/listen 80 default_server;/a add_header X-Served-By $HOSTNAME;" /etc/nginx/sites-enabled/default',
+  provider  => shell,
 }
 
-# Executing the 'service nginx restart' command to restart Nginx and apply the changes
-exec {'run':
-  command => '/usr/sbin/service nginx restart',
+# Restarting the Nginx service to apply the changes
+exec { 'restart':
+  command   => 'sudo service nginx restart',
+  provider  => shell,
 }
