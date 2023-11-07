@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# The following script is to install and configure HAProxy on lb-01 server
+# 	Configuring HAProxy to load balance traffic to web-01 and web-02 servers
+# 	Distributing requests using a round-robin algorithm
+# 	Ensuring that HAProxy can be managed via an init script
+
+# Updating and installing HAProxy on lb-01 server.
+sudo apt-get -y update
+sudo apt-get -y install haproxy
+
+# Editing the HAProxy configuration file
+haproxy_config=\
+"
+frontend  AmalNadifi_frontend
+        bind *:80
+        mode http
+        default_backend AmalNadifi_backend
+backend AmalNadifi_backend
+        balance roundrobin
+        server 409396-web-01 54.152.65.207:80 check
+        server 409396-web-02 52.206.72.6:80 check
+"
+echo "$haproxy_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+
+# Enabling HAProxy to be started by an init script
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+
+# Testing the HAProxy configuration file
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+
+# Restarting the HAProxy service
+sudo service haproxy restart
