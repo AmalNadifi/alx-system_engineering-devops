@@ -14,7 +14,7 @@ exec { 'install':
 
 # Adding a custom HTTP header 'X-Served-By' with the server's hostname to the Nginx configuration
 exec { 'replace':
-  command   => 'sudo sed -i "/listen 80 default_server;/a add_header X-Served-By $HOSTNAME;" /etc/nginx/sites-enabled/default',
+  command   => 'sudo sed -i "/listen 80 default_server;/a add_header X-Served-By ${HOSTNAME} ;" /etc/nginx/sites-enabled/default',
   provider  => shell,
 }
 
