@@ -5,7 +5,7 @@ exec { 'command':
   # Installing Nginx
   apt-get -y install nginx;
   # Adding a custom HTTP header 'X-Served-By' with the server's hostname to the Nginx configuration
-  sudo sed -i "/listen 80 default_server;/a add_header X-Served-By $HOSTNAME;" /etc/nginx/sites-available/default;
+  sudo sed -i "/listen 80 default_server;/a add_header X-Served-By ${HOSTNAME};" /etc/nginx/sites-available/default;
   # Restarting the Nginx service to apply the changes
   service nginx restart',
   provider => shell,
