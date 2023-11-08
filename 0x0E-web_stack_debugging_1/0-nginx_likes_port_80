@@ -3,14 +3,14 @@
 # The following bash script performs the following tasks to make sure Nginx is listening on port 80:
 
 # 1. Install necessary tools: Update the package repository and install Nginx along with net-tools.
-apt-get update
-apt-get install -y nginx net-tools
+sudo apt-get update
+sudo apt-get install -y nginx net-tools
 
 # 2. Check Nginx configuration: Verify the Nginx configuration for any errors.
-nginx -t
+sudo nginx -t
 
 # 3. Edit Nginx configuration to listen on port 80: Modify the Nginx configuration file to ensure it listens on port 80.
-sed -i '/listen 80 default_server;/c\    listen 80 default_server;' /etc/nginx/sites-available/default
+sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 # 4. Restart Nginx: Restart the Nginx service to apply the configuration changes.
 service nginx restart
