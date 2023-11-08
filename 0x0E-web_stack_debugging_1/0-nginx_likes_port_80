@@ -14,16 +14,3 @@ sed -i '/listen 80 default_server;/c\    listen 80 default_server;' /etc/nginx/s
 
 # 4. Restart Nginx: Restart the Nginx service to apply the configuration changes.
 service nginx restart
-
-# 5. Check Nginx status: Retrieve the status of the Nginx service.
-nginx_status=$(service nginx status)
-
-# 6. Test Nginx: Use the 'curl' command to access Nginx at port 80 and check if it returns the Nginx welcome page.
-curl_output=$(curl 0:80)
-
-# 7. Display results: Based on the status and 'curl' output, provide feedback to the user.
-if [[ $nginx_status == *"active (running)"* ]] && [[ $curl_output == *"Welcome to nginx!"* ]]; then
-    echo "Nginx is now listening on port 80."
-else
-    echo "Nginx configuration may not be correct. Please check manually"
-fi
