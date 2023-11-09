@@ -2,23 +2,25 @@
 # The following script gives information about a domain and its subdomains
 
 # Defining a function to retrieve and display DNS information for a domain and subdomain
+
 call_dig() {
 	# Using the 'dig' command to query DNS information for the specified domain and subdomain
 	# 'grep -A1' extracts the relevant section with DNS records
 	# 'tail -n 1' selects the last line containing the DNS record
 	# 'awk' is used to format and display the information
-	dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tail -n 1 | awk '{print "The subdomain " subdomain " is a " $4 " record and points to " $5}' subdomain="$2"
+	str=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' '')
+       	echo "$2 $str" | awk '{print "The subdomain " subdomain " $1 is a  " $2 " record and points to " $3}'
 }
 
 # Checking the number of command-line arguments
-if [ "$#" == 1 ]; 
+if [ "$#" == 1 ]
 then
     # If there is only one argument (the domain), call 'call_dig' function for default subdomains
     call_dig "$1" "www"
     call_dig "$1" "lb-01"
     call_dig "$1" "web-01"
     call_dig "$1" "web-02"
-elif [ "$#" == 2 ]; 
+elif [ "$#" == 2 ]
 then
     # If there are two arguments (domain and subdomain), call 'call_dig' function for the specified subdomain
     call_dig "$1" "$2"
