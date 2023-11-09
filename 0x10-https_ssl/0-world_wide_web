@@ -13,14 +13,14 @@ call_dig() {
 }
 
 # Checking the number of command-line arguments
-if [ "$#" == 1 ]
+if [ "$#" == 1 ];
 then
     # If there is only one argument (the domain), call 'call_dig' function for default subdomains
     call_dig "$1" "www"
     call_dig "$1" "lb-01"
     call_dig "$1" "web-01"
     call_dig "$1" "web-02"
-elif [ "$#" == 2 ]
+elif [ "$#" == 2 ];
 then
     # If there are two arguments (domain and subdomain), call 'call_dig' function for the specified subdomain
     call_dig "$1" "$2"
