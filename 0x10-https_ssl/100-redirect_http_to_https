@@ -1,0 +1,27 @@
+global
+    log 127.0.0.1 local0 notice
+    maxconn 2000
+    user haproxy
+    group haproxy
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    retries 3
+    option redispatch
+    timeout connect  5000
+    timeout client  50000
+    timeout server  50000
+
+frontend front_https
+        bind *:80
+        bind *:443 ssl crt /etc/letsencrypt/live/www.amnad.tech/www.amnad.tech.pem
+        http-request redirect scheme https if !{ ssl_fc }
+        default_backend server_backend
+
+backend server_backend
+        balance roundrobin
+        http-request redirect scheme https if !{ ssl_fc }
+        server 409396-web-01 54.152.65.207:80 check
+        server 409396-web-02 52.206.72.6:80 check
