@@ -8,7 +8,12 @@ call_dig() {
 	# 'grep -A1' extracts the relevant section with DNS records
 	# 'tail -n 1' selects the last line containing the DNS record
 	# 'awk' is used to format and display the information
-	dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tail -n 1 | awk '{print "The subdomain " subdomain " is a " $4 " record and points to " $5}' subdomain="$2"
+	local result=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tail -n 1)
+	local subdomain="$2"
+	local record_type=$(echo "$result" | awk '{print $4}')
+	local destination=$(echo "$result" | awk '{print $5}')
+
+	echo "The subdomain $subdomain is a $record_type record and points to $destination"
 }
 
 # Checking the number of command-line arguments
