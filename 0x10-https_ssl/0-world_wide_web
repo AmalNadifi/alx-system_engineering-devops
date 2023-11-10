@@ -3,24 +3,20 @@
 
 # Defining a function to retrieve and display DNS information for a domain and subdomain
 
-call_dig() {
+call_dig () {
 	# Using the 'dig' command to query DNS information for the specified domain and subdomain
 	# 'grep -A1' extracts the relevant section with DNS records
-	# 'tail -n 1' selects the last line containing the DNS record
 	# 'awk' is used to format and display the information
-	dig "$1" | grep -A1 'ANSWER SECTION:' | sed -r "s/$1./$2/g" | awk -F" " ' NR==2 { print "The subdomain " $1 " is a " $4 " record and points to " $5 }'
+    dig "$1" | grep -A1 'ANSWER SECTION:' | sed -r "s/$1./$2/g" | awk -F" " ' NR==2 { print "The subdomain " $1 " is a " $4 " record and points to " $5 }'
 }
 
 # Checking the number of command-line arguments
-if [ "$#" == 1 ];
+if [ "$#" -eq 2 ]
 then
-    # If there is only one argument (the domain), call 'call_dig' function for default subdomains
+    call_dig "$2.$1" "$2"
+else
     call_dig "www.$1" "www"
     call_dig "lb-01.$1" "lb-01"
     call_dig "web-01.$1" "web-01"
     call_dig "web-02.$1" "web-02"
-elif [ "$#" == 2 ];
-then
-    # If there are two arguments (domain and subdomain), call 'call_dig' function for the specified subdomain
-    call_dig "$2.$1" "$2"
 fi
