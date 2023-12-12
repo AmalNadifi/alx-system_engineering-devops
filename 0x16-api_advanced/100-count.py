@@ -17,7 +17,8 @@ def count_words(subreddit, word_list, n_after='',
         d_words (list, optional): A list to store the counts of each word.
 
     Returns:
-        None
+        int : the number of occurences of a word
+        or None
     """
 
     word_list = map(lambda x: x.lower(), word_list)
@@ -52,8 +53,7 @@ def count_words(subreddit, word_list, n_after='',
     n_after = result.get('after', None)
 
     if n_after is None:
-        sorted_dict = sorted(d_words.items(),
-                             key=lambda x: x[1],
+        sorted_dict = sorted(d_words.items(), key=lambda x: x[1],
                              reverse=True)
 
         for a in sorted_dict:
@@ -61,5 +61,4 @@ def count_words(subreddit, word_list, n_after='',
                 print("{}: {}".format(a[0], a[1]))
         return
 
-    return count_words(subreddit, word_list,
-                       n_after, d_words)
+    return count_words(subreddit, word_list, n_after, d_words)
