@@ -21,9 +21,7 @@ def recurse(subreddit, hot_list=[]):
         the subreddit is invalid
     """
 
-    # Base case: If subreddit is not valid, return None
-    if subreddit is None or not isinstance(subreddit, str):
-        return None
+    global after
 
     # Defining user agent for the Reddit API request
     headers = {'User-agent': 'api_advanced-project'}
@@ -43,6 +41,7 @@ def recurse(subreddit, hot_list=[]):
         after_data = response.json().get("data").get("after")
         # If 'after' data is present, make a recursive call to fetch more posts
         if after_data is not None:
+            after = after_data
             recurse(subreddit, hot_list)
         # Extract posts from the current set of posts and append to hot_list
         all_posts = response.json().get("data").get("children")
