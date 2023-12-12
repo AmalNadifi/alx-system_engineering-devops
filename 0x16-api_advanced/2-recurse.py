@@ -20,6 +20,7 @@ def recurse(subreddit, hot_list=[]):
         given subreddit. Returns None if no results are found or if
         the subreddit is invalid
     """
+    global after
 
     # Base case: If subreddit is not valid, return None
     if subreddit is None or not isinstance(subreddit, str):
