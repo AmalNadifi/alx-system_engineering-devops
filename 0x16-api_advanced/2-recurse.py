@@ -20,7 +20,6 @@ def recurse(subreddit, hot_list=[]):
         given subreddit. Returns None if no results are found or if
         the subreddit is invalid
     """
-    global after
 
     # Base case: If subreddit is not valid, return None
     if subreddit is None or not isinstance(subreddit, str):
@@ -30,7 +29,7 @@ def recurse(subreddit, hot_list=[]):
     headers = {'User-agent': 'Google Chrome Version 91.0.4472.124'}
 
     # Setting parameters for the API request
-    params = {'limit': 100, 'after': after}
+    params = {'after': after}
 
     # Creating the URL for the Reddit API request
     url = f'https://www.reddit.com/r/{subreddit}/hot/.json'
@@ -55,7 +54,7 @@ def recurse(subreddit, hot_list=[]):
             hot_list = recurse(
                 subreddit, hot_list, after=results.get('data').get('after')
             )
-        return hot_list
+        return (hot_list)
 
     except Exception as e:
         # Handle exceptions and print an error message
