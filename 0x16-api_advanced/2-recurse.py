@@ -14,15 +14,12 @@ def recurse(subreddit, hot_list=[]):
     Args:
         subreddit (str): The name of the subreddit
         hot_list (list, optional): A list to store the titles of hot articles
-        after (str, optional): The Reddit API parameter for pagination
 
     Returns:
         list or None: A list containing the titles of all hot articles for the
         given subreddit. Returns None if no results are found or if
         the subreddit is invalid
     """
-    if hot_list is None:
-        hot_list = []
 
     # Base case: If subreddit is not valid, return None
     if subreddit is None or not isinstance(subreddit, str):
@@ -38,7 +35,8 @@ def recurse(subreddit, hot_list=[]):
     url = f'https://www.reddit.com/r/{subreddit}/hot/.json'
 
     # Sending a GET request to the Reddit API with user agent and parameters
-    response = requests.get(url, headers=headers, params=params)
+    response = requests.get(url, headers=headers, params=params,
+                            allow_redirects=False)
 
     # Parsing the JSON response from the Reddit API
     results = response.json()
