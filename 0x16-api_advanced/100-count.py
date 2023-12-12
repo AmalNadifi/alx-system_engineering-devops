@@ -44,10 +44,10 @@ def count_words(subreddit, word_list, n_after='',
 
     for post in children:
         title = post.get('data', {}).get('title', '')
-        for key in word_list:
+        for keyword in word_list:
             for word in title.lower().split():
-                if key == word:
-                    d_words[key] = d_words.get(key, 0) + 1
+                if keyword == word:
+                    d_words[keyword] = d_words.get(keyword, 0) + 1
 
     n_after = result.get('after', None)
 
