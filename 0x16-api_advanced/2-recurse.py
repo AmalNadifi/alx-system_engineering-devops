@@ -26,36 +26,29 @@ def recurse(subreddit, hot_list=[]):
         return None
 
     # Defining user agent for the Reddit API request
-    headers = {'User-agent': 'Google Chrome Version 91.0.4472.124'}
+    headers = {'User-agent': 'api_advanced-project'}
 
     # Setting parameters for the API request
-    params = {'after': after}
+    parameters = {'after': after}
 
     # Creating the URL for the Reddit API request
     url = f'https://www.reddit.com/r/{subreddit}/hot/.json'
 
     # Sending a GET request to the Reddit API with user agent and parameters
-    response = requests.get(url, headers=headers, params=params,
+    response = requests.get(url, headers=headers, params=parameters,
                             allow_redirects=False)
 
-    # Parsing the JSON response from the Reddit API
-    results = response.json()
-
-    try:
-        # Extracting the list of posts from the API response
-        posts = results.get('data').get('children')
-
-        # Appending the titles of the current set of posts to the hot_list
-        for post in posts:
-            hot_list.append(post.get('data').get('title'))
-
-        # Recursively calling the func with the 'after' param for pagination
-        if results.get('data').get('after') is not None:
-            hot_list = recurse(
-                subreddit, hot_list, after=results.get('data').get('after')
-            )
-        return (hot_list)
-
-    except Exception as e:
-        # Handle exceptions and print an error message
-        return (None)
+    if response.status_code == 200:
+        # Extract 'after' data from the API response
+        after_data = response.json().get("data").get("after")
+        # If 'after' data is present, make a recursive call to fetch more posts
+        if after_data is not None:
+            recurse(subreddit, hot_list)
+        # Extract posts from the current set of posts and append to hot_list
+        all_posts = response.json().get("data").get("children")
+        for post in all_posts:
+            hot_list.append(post.get("data").get("title"))
+        return hot_list
+    else:
+        # Return None if there's an issue with the API request
+        return None
