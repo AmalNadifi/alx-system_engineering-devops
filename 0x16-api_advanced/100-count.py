@@ -2,10 +2,10 @@
 """ The following script is for counting Reddit API word
 """
 import requests
+import json
 
 
-def count_words(subreddit, word_list, n_after='',
-                d_words={}):
+def count_words(subreddit, word_list, n_after='', d_words={}):
     """
     This method counts the occurrences of words in the titles of hot articles
     from a given subreddit
