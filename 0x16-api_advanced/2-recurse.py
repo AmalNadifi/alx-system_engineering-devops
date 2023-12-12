@@ -52,11 +52,10 @@ def recurse(subreddit, hot_list=None, after=None):
 
         # Recursively calling the func with the 'after' param for pagination
         if results.get('data').get('after') is not None:
-            recurse(
-                subreddit, hot_list, after=results.get('data').get('after'))
-        else:
-            # Base case: Return the hot_list when no more pages are available
-            return hot_list
+            hot_list = recurse(
+                subreddit, hot_list, after=results.get('data').get('after')
+            )
+        return hot_list
 
     except Exception as e:
         # Handle exceptions and print an error message
