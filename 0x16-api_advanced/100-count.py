@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ The following script is for counting Reddit API word
 """
-import requests
 import json
+import requests
 
 
 def count_words(subreddit, word_list, n_after='', d_words={}):
