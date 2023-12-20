@@ -3,7 +3,7 @@ server {
     listen [::]:80 default_server;
 
     # Using IP of server as domain name
-    server_name 54.236.51.10
+    server_name 54.236.51.10;
 
     add_header X-Served-By 409396-web-01;
     root   /var/www/html;
