@@ -60,8 +60,8 @@ server {
         }
 
 	location /airbnb-dynamic/number_odd_or_even/ {
-	include proxy_params;
-        proxy_pass http://127.0.0.1:5001/number_odd_or_even/$1;
+		include proxy_params;
+        	proxy_pass http://127.0.0.1:5001/number_odd_or_even/;
 	}
 
 
