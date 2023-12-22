@@ -1,0 +1,29 @@
+[Unit]
+# Description of the unit
+Description=Gunicorn instance to serve the AirBnB Clone v4 application
+# Define the dependencies for this unit
+After=network.target
+
+[Service]
+# Specify the user and group under which the process will run
+User=ubuntu
+Group=www-data
+# Define environment variables needed by the application
+Environment="HBNB_MYSQL_USER=hbnb_dev"
+Environment="HBNB_MYSQL_PWD=hbnb_dev_pwd"
+Environment="HBNB_MYSQL_HOST=localhost"
+Environment="HBNB_MYSQL_DB=hbnb_dev_db"
+Environment="HBNB_TYPE_STORAGE=db"
+# Set the working directory for the process
+WorkingDirectory=/home/ubuntu/AirBnB_clone_v4
+# Define the command to start the Gunicorn process
+ExecStart=/home/ubuntu/.local/bin/gunicorn --workers 3 --bind 0.0.0.0:5003 --error-logfile /tmp/airbnb-error.log --access-logfile /tmp/airbnb-access.log  web_dynamic.2-hbnb:app
+# Define the command to reload the process
+ExecReload=/bin/kill -s HUP $MAINPID
+# Always restart the service if it exits
+Restart=always
+
+[Install]
+# Specify when the service should be started
+WantedBy=multi-user.target
+
